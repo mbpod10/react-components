@@ -23,17 +23,9 @@ const CardList = () => {
 
   const [dataState, dispatch] = useReducer(dataReducer, data)
 
-  const cardMapList = dataState.map((element, index) => {
+  const cardMapList = dataState.map((element) => {
     return (
-      <SingleCard
-        id={element.id}
-        dispatch={dispatch}
-        name={element.name}
-        symbol={element.symbol}
-        weighting={element.weighting}
-        owned={element.owned}
-        key={element.id}
-      />
+      <SingleCard stock={element} dispatch={dispatch} key={element.id} />
     )
   })
 

@@ -2,6 +2,8 @@ import React from 'react'
 import classes from './SingleCard.module.css'
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
 const SingleCard = (props) => {
 
@@ -15,23 +17,31 @@ const SingleCard = (props) => {
   return (
 
     <Card className={classes.singlecard}>
-      <Card.Header>{props.symbol}</Card.Header>
+
+      <Card.Header className={classes['card-container']}>
+        <div>
+          {props.stock.symbol}
+        </div>
+
+        <div>
+          {props.stock.owned ?
+            <FontAwesomeIcon style={{ color: 'green' }} icon={faCheck} size="2x" /> :
+            <FontAwesomeIcon style={{ color: 'red' }} icon={faPlusCircle} size="2x" />
+          }
+        </div>
+      </Card.Header>
+
+
+
       <Card.Body>
-        <Card.Title>{props.name}</Card.Title>
-        <Card.Text>
-          Weighting: {props.weighting}%
-        </Card.Text>
-
+        <Card.Title>{props.stock.name}</Card.Title>
+        <Card.Text> Weighting: {props.stock.weighting}% </Card.Text>
         <Button
-          // onClick={() => ownedToggleHandler(props.id)}
-          onClick={() => ownedToggleHandler(props.id)}
-          className={`${props.owned ? classes.owned : classes.notOwned}`}
+          onClick={() => ownedToggleHandler(props.stock.id)}
+          className={`${props.stock.owned ? classes.owned : classes.notOwned}`}
           variant="primary">
-          {props.owned ? ownedText : notOwnedText}
-
-
+          {props.stock.owned ? ownedText : notOwnedText}
         </Button>
-
       </Card.Body>
     </Card>
 

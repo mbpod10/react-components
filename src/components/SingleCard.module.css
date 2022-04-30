@@ -26,9 +26,27 @@
 }
 
 .owned {
-  background-color: green
+  background-color: green;
+  border-color: green
 }
 
 .notOwned {
-  background-color: red
+  background-color: red;
+  border-color: red;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.fa-thumbs-down {
+  color: red;
+  font-size: 500px;
+}
+
+.fa-check {
+  color: green;
+  font-size: 500px;
 }
