@@ -1,0 +1,11 @@
+.singlecard {
+  width: 50%;
+}
+
+.owned {
+  background-color: green
+}
+
+.notOwned {
+  background-color: red
+}
