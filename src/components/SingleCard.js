@@ -5,8 +5,12 @@ import Button from 'react-bootstrap/Button';
 
 const SingleCard = (props) => {
 
-  let owned = "Owned"
-  let notOwned = "Not Owned"
+  let ownedText = "Owned"
+  let notOwnedText = "Not Owned"
+
+  const ownedToggleHandler = (id) => {
+    props.dispatch({ type: 'OWNED_TOGGLE', id: id })
+  }
 
   return (
 
@@ -17,10 +21,17 @@ const SingleCard = (props) => {
         <Card.Text>
           Weighting: {props.weighting}%
         </Card.Text>
-        <Button variant="primary"
-          className={props.owned ? classes.owned : classes.notOwned}>
-          {props.owned ? owned : notOwned}
+
+        <Button
+          // onClick={() => ownedToggleHandler(props.id)}
+          onClick={() => ownedToggleHandler(props.id)}
+          className={`${props.owned ? classes.owned : classes.notOwned}`}
+          variant="primary">
+          {props.owned ? ownedText : notOwnedText}
+
+
         </Button>
+
       </Card.Body>
     </Card>
 

@@ -1,21 +1,39 @@
-import React from 'react'
+import React, { useReducer } from 'react'
 import SingleCard from './SingleCard'
 import { data } from './Data'
 import classes from './CardList.module.css'
 
-const CardList = () => {
-  console.log(data)
+const dataReducer = (state, action) => {
+  if (action.type === "OWNED_TOGGLE") {
 
-  const cardMapList = data.map((element, index) => {
+    const indexOfUpdatedItem = state.findIndex(
+      (stock) => stock.id === action.id)
+
+    const stock = state[indexOfUpdatedItem]
+    const updatedStock = { ...stock, owned: !stock.owned }
+    let updatedStocks = [...state]
+    updatedStocks[indexOfUpdatedItem] = updatedStock
+
+    return updatedStocks
+  }
+}
+
+
+const CardList = () => {
+
+  const [dataState, dispatch] = useReducer(dataReducer, data)
+
+  const cardMapList = dataState.map((element, index) => {
     return (
       <SingleCard
+        id={element.id}
+        dispatch={dispatch}
         name={element.name}
         symbol={element.symbol}
         weighting={element.weighting}
         owned={element.owned}
-        key={element.key}
+        key={element.id}
       />
-
     )
   })
 
