@@ -7,6 +7,7 @@ import Trade from './components/Trade';
 function App() {
 
   const [showTrade, setShowTrade] = useState(false)
+  const [stock, setStock] = useState()
 
   const showTradeHandler = () => {
     setShowTrade(true)
@@ -16,11 +17,16 @@ function App() {
     setShowTrade(false)
   }
 
+  const raiseStock = (stock) => {
+    setStock(stock)
+  }
+
   return (
     <>
-      {showTrade && <Trade onCloseTrade={closeTradeHandler} />}
+      {showTrade && <Trade onCloseTrade={closeTradeHandler} stock={stock} />}
       <CardList
         onShowTrade={showTradeHandler}
+        raiseStock={raiseStock}
       />
     </>
 

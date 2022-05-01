@@ -14,6 +14,7 @@ const CardForm = (props) => {
   const onTradeClick = (event) => {
     event.preventDefault()
     props.onShowTrade()
+    props.raiseStock(props.id)
   }
 
   return (

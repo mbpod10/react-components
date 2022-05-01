@@ -40,6 +40,13 @@ const CardList = (props) => {
 
   const [dataState, dispatch] = useReducer(dataReducer, data)
 
+  const raiseStock = (id) => {
+    let formStock = dataState.filter((stock) => {
+      return stock.id === id
+    })
+    props.raiseStock(formStock[0])
+  }
+
   const cardMapList = dataState.map((element) => {
     return (
       <SingleCard
@@ -48,6 +55,7 @@ const CardList = (props) => {
         key={element.id}
         onShowTrade={props.onShowTrade}
         onCloseTrade={props.onCloseTrade}
+        raiseStock={raiseStock}
       />
     )
   })

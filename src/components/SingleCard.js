@@ -67,7 +67,7 @@ const SingleCard = (props) => {
             id={props.stock.id}
             amount={props.stock.amount}
             onShowTrade={props.onShowTrade}
-          // onCloseTrade={props.onCloseTrade}
+            raiseStock={props.raiseStock}
           /> :
           <div>Stock Not Owned</div>}
       </Card.Header>
