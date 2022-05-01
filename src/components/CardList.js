@@ -36,13 +36,19 @@ const dataReducer = (state, action) => {
 }
 
 
-const CardList = () => {
+const CardList = (props) => {
 
   const [dataState, dispatch] = useReducer(dataReducer, data)
 
   const cardMapList = dataState.map((element) => {
     return (
-      <SingleCard stock={element} dispatch={dispatch} key={element.id} />
+      <SingleCard
+        stock={element}
+        dispatch={dispatch}
+        key={element.id}
+        onShowTrade={props.onShowTrade}
+        onCloseTrade={props.onCloseTrade}
+      />
     )
   })
 

@@ -1,11 +1,29 @@
+import React, { useState } from 'react';
+
 import './App.css';
 import CardList from './components/CardList';
+import Trade from './components/Trade';
 
 function App() {
+
+  const [showTrade, setShowTrade] = useState(false)
+
+  const showTradeHandler = () => {
+    setShowTrade(true)
+  }
+
+  const closeTradeHandler = () => {
+    setShowTrade(false)
+  }
+
   return (
-    <div className="App">
-      <CardList />
-    </div>
+    <>
+      {showTrade && <Trade onCloseTrade={closeTradeHandler} />}
+      <CardList
+        onShowTrade={showTradeHandler}
+      />
+    </>
+
   );
 }
 

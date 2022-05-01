@@ -66,6 +66,8 @@ const SingleCard = (props) => {
             dispatch={props.dispatch}
             id={props.stock.id}
             amount={props.stock.amount}
+            onShowTrade={props.onShowTrade}
+          // onCloseTrade={props.onCloseTrade}
           /> :
           <div>Stock Not Owned</div>}
       </Card.Header>
