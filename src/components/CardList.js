@@ -3,14 +3,31 @@ import SingleCard from './SingleCard'
 import { data } from './Data'
 import classes from './CardList.module.css'
 
+const findStockIndex = (array, id) => {
+  const returnIndex = array.findIndex(
+    (stock) => stock.id === id)
+  return returnIndex
+}
 const dataReducer = (state, action) => {
+
   if (action.type === "OWNED_TOGGLE") {
 
-    const indexOfUpdatedItem = state.findIndex(
-      (stock) => stock.id === action.id)
+    const indexOfUpdatedItem = findStockIndex(state, action.id)
 
     const stock = state[indexOfUpdatedItem]
     const updatedStock = { ...stock, owned: !stock.owned }
+    let updatedStocks = [...state]
+    updatedStocks[indexOfUpdatedItem] = updatedStock
+
+    return updatedStocks
+  }
+  if (action.type === "AMOUNT_CHANGED") {
+
+    const indexOfUpdatedItem = findStockIndex(state, action.id)
+
+
+    const stock = state[indexOfUpdatedItem]
+    const updatedStock = { ...stock, amount: action.amount.current.value }
     let updatedStocks = [...state]
     updatedStocks[indexOfUpdatedItem] = updatedStock
 

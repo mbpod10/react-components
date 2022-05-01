@@ -1,7 +1,10 @@
 import React from 'react'
-import classes from './SingleCard.module.css'
+
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import CardForm from './CardForm';
+
+import classes from './SingleCard.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
@@ -20,13 +23,22 @@ const SingleCard = (props) => {
 
       <Card.Header className={classes['card-container']}>
         <div>
-          {props.stock.symbol}
+          ${props.stock.symbol}
         </div>
 
         <div>
           {props.stock.owned ?
-            <FontAwesomeIcon style={{ color: 'green' }} icon={faCheck} size="2x" /> :
-            <FontAwesomeIcon style={{ color: 'red' }} icon={faPlusCircle} size="2x" />
+            <FontAwesomeIcon
+              onClick={() => ownedToggleHandler(props.stock.id)}
+              style={{ color: 'green' }}
+              icon={faCheck}
+              size="2x" /> :
+
+            <FontAwesomeIcon
+              onClick={() => ownedToggleHandler(props.stock.id)}
+              style={{ color: 'red' }}
+              icon={faPlusCircle}
+              size="2x" />
           }
         </div>
       </Card.Header>
@@ -34,15 +46,29 @@ const SingleCard = (props) => {
 
 
       <Card.Body>
-        <Card.Title>{props.stock.name}</Card.Title>
-        <Card.Text> Weighting: {props.stock.weighting}% </Card.Text>
-        <Button
-          onClick={() => ownedToggleHandler(props.stock.id)}
-          className={`${props.stock.owned ? classes.owned : classes.notOwned}`}
-          variant="primary">
-          {props.stock.owned ? ownedText : notOwnedText}
-        </Button>
+        <Card.Title className={classes['card-title']}>
+          {props.stock.name}
+          <Button
+            onClick={() => ownedToggleHandler(props.stock.id)}
+            className={`${props.stock.owned ? classes.owned : classes.notOwned}`}
+            variant="primary">
+            {props.stock.owned ? ownedText : notOwnedText}
+          </Button>
+        </Card.Title>
+        <Card.Text>${props.stock.price}
+        </Card.Text>
       </Card.Body>
+
+      <Card.Header>
+        {props.stock.owned ?
+          <CardForm
+            price={props.stock.price}
+            dispatch={props.dispatch}
+            id={props.stock.id}
+            amount={props.stock.amount}
+          /> :
+          <div>Stock Not Owned</div>}
+      </Card.Header>
     </Card>
 
   )
