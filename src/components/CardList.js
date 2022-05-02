@@ -1,7 +1,13 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useEffect } from 'react'
+
+import axios from 'axios'
+
 import SingleCard from './SingleCard'
-import { data } from './Data'
 import classes from './CardList.module.css'
+
+// const ACTIONS = {
+//   MAK
+// }
 
 const findStockIndex = (array, id) => {
   const returnIndex = array.findIndex(
@@ -10,44 +16,80 @@ const findStockIndex = (array, id) => {
 }
 const dataReducer = (state, action) => {
 
+  if (action.type === "MAKE_API_CALL") {
+    return {
+      ...state,
+      loading: true
+    }
+  }
+
+  if (action.type === "SUCCESS") {
+    return {
+      ...state,
+      loading: false,
+      stocks: action.data
+    }
+  }
+
   if (action.type === "OWNED_TOGGLE") {
-
-    const indexOfUpdatedItem = findStockIndex(state, action.id)
-
-    const stock = state[indexOfUpdatedItem]
+    const indexOfUpdatedItem = findStockIndex(state.stocks, action.id)
+    const stock = state.stocks[indexOfUpdatedItem]
     const updatedStock = { ...stock, owned: !stock.owned }
-    let updatedStocks = [...state]
+    let updatedStocks = [...state.stocks]
     updatedStocks[indexOfUpdatedItem] = updatedStock
-
-    return updatedStocks
+    return {
+      ...state,
+      stocks: updatedStocks
+    }
   }
   if (action.type === "AMOUNT_CHANGED") {
-
-    const indexOfUpdatedItem = findStockIndex(state, action.id)
-
-
-    const stock = state[indexOfUpdatedItem]
+    const indexOfUpdatedItem = findStockIndex(state.stocks, action.id)
+    const stock = state.stocks[indexOfUpdatedItem]
     const updatedStock = { ...stock, amount: action.amount.current.value }
-    let updatedStocks = [...state]
+    let updatedStocks = [...state.stocks]
     updatedStocks[indexOfUpdatedItem] = updatedStock
 
-    return updatedStocks
+    return {
+      ...state,
+      stocks: updatedStocks
+    }
   }
+}
+
+const initialState = {
+  stocks: [],
+  loading: false,
+  error: null
 }
 
 
 const CardList = (props) => {
 
-  const [dataState, dispatch] = useReducer(dataReducer, data)
+  useEffect(() => {
+    dispatch({ type: "MAKE_API_CALL" })
+    const makeAPICall = async () => {
+      try {
+        const response = await axios.get('http://localhost:4001/stocks');
+        dispatch({ type: "SUCCESS", data: response.data })
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    makeAPICall()
+  }, [])
+
+  const [dataState, dispatch] = useReducer(dataReducer, initialState)
+
+
 
   const raiseStock = (id) => {
-    let formStock = dataState.filter((stock) => {
+    let formStock = dataState.stocks.filter((stock) => {
       return stock.id === id
     })
     props.raiseStock(formStock[0])
   }
 
-  const cardMapList = dataState.map((element) => {
+  const cardMapList = dataState.stocks.map((element) => {
     return (
       <SingleCard
         stock={element}
@@ -66,9 +108,15 @@ const CardList = (props) => {
         <div className={classes.heading}>
           <h1 className={classes['heading__title']}>S&P 500 Companies</h1>
         </div>
-        <div className={classes.cardList}>
-          {cardMapList}
-        </div>
+        {dataState.loading ?
+          <div className={classes.loaderDiv}>
+            <div className={classes.loader}></div>
+          </div>
+          :
+          <div className={classes.cardList}>
+            {cardMapList}
+          </div>
+        }
       </div>
     </>
   )

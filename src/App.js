@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-
 import './App.css';
 import CardList from './components/CardList';
 import Trade from './components/Trade';
+
 
 function App() {
 
@@ -25,6 +25,7 @@ function App() {
     <>
       {showTrade && <Trade onCloseTrade={closeTradeHandler} stock={stock} />}
       <CardList
+        // stocks={allStocks}
         onShowTrade={showTradeHandler}
         raiseStock={raiseStock}
       />
