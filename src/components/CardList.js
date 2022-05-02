@@ -6,7 +6,10 @@ import SingleCard from './SingleCard'
 import classes from './CardList.module.css'
 
 // const ACTIONS = {
-//   MAK
+//   MAKE_API_CALL: "MAKE_API_CALL",
+//   SUCCESS: "SUCCESS",
+//   OWNED_TOGGLE: "OWNED_TOGGLE",
+//   AMOUNT_CHANGED: "AMOUNT_CHANGED"
 // }
 
 const findStockIndex = (array, id) => {
@@ -37,6 +40,17 @@ const dataReducer = (state, action) => {
     const updatedStock = { ...stock, owned: !stock.owned }
     let updatedStocks = [...state.stocks]
     updatedStocks[indexOfUpdatedItem] = updatedStock
+
+    const ownedBool = stock.owned
+
+    try {
+      axios.post(`http://localhost:4001/stocks/update/${action.id}`,
+        { owned: ownedBool })
+      // console.log(response.data)
+    } catch (error) {
+      console.error(error);
+    }
+
     return {
       ...state,
       stocks: updatedStocks
