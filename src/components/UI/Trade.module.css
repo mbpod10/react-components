@@ -1,8 +1,15 @@
-h3 {
+h3,
+h6 {
   text-align: center;
 }
 
 .button {
   margin-top: 10px;
   margin-left: 70px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }

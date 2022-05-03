@@ -1,9 +1,15 @@
 .formContainer {
   display: flex;
   flex-direction: row;
+  /* flex-wrap: wrap; */
   justify-content: space-around;
+  margin-bottom: 15px;
 }
 
 .symbol {
   width: 30%;
+}
+
+.form {
+  padding: 15px
 }

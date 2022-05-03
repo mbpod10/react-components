@@ -6,7 +6,8 @@ import axios from "axios";
 const defaultStockState = {
   stocks: [],
   loading: false,
-  error: null
+  error: false,
+  totalMoney: 0
 }
 
 const findStockIndex = (array, id) => {
@@ -54,23 +55,55 @@ const dataReducer = (state, action) => {
     }
   }
   if (action.type === "AMOUNT_CHANGED") {
-    const amount = action.amount.current.value
+    console.log(action.amount.current.value)
+    if (!action.amount.current.value) {
+      return {
+        ...state,
+        error: "Please enter a valid number"
+      }
+    }
+    const amount = parseInt(action.amount.current.value, 10)
     const indexOfUpdatedItem = findStockIndex(state.stocks, action.id)
     const stock = state.stocks[indexOfUpdatedItem]
-    const updatedStock = { ...stock, amount: amount }
+    const beforeAmount = stock.amount
+
+    let totalAmount
+
+    if (action.transaction === "sell") {
+      totalAmount = beforeAmount - amount
+      if (totalAmount === 0) totalAmount = 0
+      if (totalAmount < 0) {
+        return {
+          ...state,
+          error: `You only have ${stock.amount} shares to sell`
+        }
+      }
+    }
+
+    if (action.transaction === "buy") {
+      totalAmount = beforeAmount + amount
+    }
+
+    const updatedStock = { ...stock, amount: totalAmount }
     try {
       axios.post(`http://localhost:4001/stocks/${action.id}`,
-        { amount: amount })
+        { amount: totalAmount })
     } catch (error) {
       console.error(error);
+      return { ...state, error: error }
     }
     let updatedStocks = [...state.stocks]
     updatedStocks[indexOfUpdatedItem] = updatedStock
 
     return {
       ...state,
-      stocks: updatedStocks
+      stocks: updatedStocks,
+      error: false
     }
+  }
+  return {
+    ...state,
+    error: false
   }
 }
 
@@ -81,8 +114,8 @@ const StockProvider = (props) => {
     dispatch({ type: 'OWNED_TOGGLE', id: id })
   }
 
-  const changeAmountHandler = (id, amount) => {
-    dispatch({ type: 'AMOUNT_CHANGED', id: id, amount: amount })
+  const changeAmountHandler = (id, amount, transaction) => {
+    dispatch({ type: 'AMOUNT_CHANGED', id: id, amount: amount, transaction: transaction })
   }
 
   const makeAPICallHandler = useCallback(() => {
@@ -95,12 +128,13 @@ const StockProvider = (props) => {
 
   const stockContext = {
     stocks: stockState.stocks,
+    loading: stockState.loading,
+    error: stockState.error,
+    totalMoney: stockState.totalMoney,
     changeAmount: changeAmountHandler,
     toggleOwned: toggleOwnedHandler,
     makeAPICall: makeAPICallHandler,
-    successAPICall: successAPICallHandler,
-    loading: stockState.loading,
-    error: stockState.error
+    successAPICall: successAPICallHandler
   }
 
   return (

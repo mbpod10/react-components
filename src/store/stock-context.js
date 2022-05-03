@@ -7,7 +7,8 @@ const StockContext = React.createContext({
   makeAPICall: () => { },
   successAPICall: () => { },
   loading: null,
-  error: null
+  error: null,
+  totalMoney: null
 })
 
 export default StockContext
