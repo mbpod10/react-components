@@ -9,6 +9,7 @@ function App() {
   const [showTrade, setShowTrade] = useState(false)
   const [stock, setStock] = useState()
 
+
   const showTradeHandler = () => {
     setShowTrade(true)
   }
@@ -17,7 +18,7 @@ function App() {
     setShowTrade(false)
   }
 
-  const raiseStock = (stock) => {
+  const raiseStock = (stock, func) => {
     setStock(stock)
   }
 
@@ -25,7 +26,6 @@ function App() {
     <>
       {showTrade && <Trade onCloseTrade={closeTradeHandler} stock={stock} />}
       <CardList
-        // stocks={allStocks}
         onShowTrade={showTradeHandler}
         raiseStock={raiseStock}
       />

@@ -18,25 +18,31 @@ const CardForm = (props) => {
   }
 
   return (
-    <form onSubmit={submitHandler}>
-      <div className={classes['flex-container']}>
-        <div>
-          <input
-            ref={amount}
-            type='number'
-            min='0'
-          />
-        </div>
-        <div>
-          <button onClick={onTradeClick}>
-            Trade
-          </button>
-          Own ${(props.price * props.amount).toFixed(2)}
-        </div>
+    // <form onSubmit={submitHandler}>
+    //   <div className={classes['flex-container']}>
+    //     <div>
+    //       <input
+    //         ref={amount}
+    //         type='number'
+    //         min='0'
+    //       />
+    //     </div>
+    //     <div>
+    // <button onClick={onTradeClick}>
+    //   Trade
+    // </button>
+    //       Own ${(props.price * props.amount).toFixed(2)}
+    //     </div>
 
-      </div>
-    </form >
+    //   </div>
+    // </form >
+    <div>
 
+      <button onClick={onTradeClick}>
+        Trade
+      </button>
+
+    </div>
   )
 }
 
