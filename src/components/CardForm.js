@@ -36,7 +36,10 @@ const CardForm = (props) => {
 
     //   </div>
     // </form >
-    <div>
+    <div className={classes['flex-container']}>
+      <div>
+        Owned: ${(props.amount * props.price).toFixed(2)}
+      </div>
 
       <button onClick={onTradeClick}>
         Trade

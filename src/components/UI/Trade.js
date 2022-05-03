@@ -1,6 +1,6 @@
 import React from 'react'
-import Modal from './UI/Modal'
-import ModalForm from './UI/ModalForm';
+import Modal from './Modal'
+import ModalForm from './ModalForm';
 
 import classes from "./Trade.module.css"
 import Button from 'react-bootstrap/Button';

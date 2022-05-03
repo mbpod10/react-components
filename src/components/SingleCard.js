@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import CardForm from './CardForm';
+import StockContext from '../store/stock-context';
 
 import classes from './SingleCard.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,11 +11,13 @@ import { faCheck, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
 const SingleCard = (props) => {
 
+  const stockCtx = useContext(StockContext)
+
   let ownedText = "Owned"
   let notOwnedText = "Not Owned"
 
   const ownedToggleHandler = (id) => {
-    props.dispatch({ type: 'OWNED_TOGGLE', id: id })
+    stockCtx.toggleOwned(id)
   }
 
   return (
