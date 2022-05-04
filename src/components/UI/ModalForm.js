@@ -17,21 +17,24 @@ const ModalForm = (props) => {
 
   const onSubmitHandler = (event) => {
     event.preventDefault()
+
     let transaction = event.nativeEvent.submitter.name
+    let tempAmount = parseInt(amount.current.value, 10)
 
     makeAPICall('transaction')
 
-    try {
-      const response = axios.post(`http://localhost:4001/stocks/${props.stock.id}`,
-        { amount: amount.current.value, transaction: transaction })
+    const makeTransactionCall = async () => {
+      let response = await axios.post(`http://localhost:4001/stocks/${props.stock.id}`,
+        { amount: tempAmount, transaction: transaction })
       console.log(response)
-      changeAmount(props.stock.id, amount.current.value, transaction)
+      if (response.data.error) {
+        failureAPICall(response.data.error, 'transaction')
+        return;
+      }
+      changeAmount(props.stock.id, tempAmount, transaction)
       props.onCloseTrade()
-    }
-    catch (error) {
-      console.log(error.response.data.error)
-      failureAPICall(error.response.data.error, 'transaction')
-    }
+    };
+    makeTransactionCall()
   }
 
   return (

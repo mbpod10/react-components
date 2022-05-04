@@ -7,6 +7,7 @@ const StockContext = React.createContext({
   makeAPICall: (handler) => { },
   successAPICall: () => { },
   failureAPICall: (error, handler) => { },
+  closeErrors: () => { },
   stockListLoading: null,
   transactionLoading: null,
   error: null,

@@ -4,10 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import StockProvider from './store/StockProvider';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <StockProvider>
+      <App />
+
+    </StockProvider>
   </React.StrictMode>
 );
 

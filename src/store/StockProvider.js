@@ -85,7 +85,10 @@ const dataReducer = (state, action) => {
     }
   }
   if (action.type === "ERROR") {
-    if (action.handler === 'transaction') return { ...state, error: action.error }
+    if (action.handler === 'transaction') return { ...state, error: action.error, transactionLoading: false }
+  }
+  if (action.type === "CLOSE_ALL_ERRORS") {
+    return { ...state, error: false }
   }
 }
 
@@ -112,6 +115,10 @@ const StockProvider = (props) => {
     dispatch({ type: "SUCCESS", data: data })
   }, [])
 
+  const closeErrorsHandler = () => {
+    dispatch({ type: "CLOSE_ALL_ERRORS" })
+  }
+
   const stockContext = {
     stocks: stockState.stocks,
     stockListLoading: stockState.stockListLoading,
@@ -122,7 +129,8 @@ const StockProvider = (props) => {
     toggleOwned: toggleOwnedHandler,
     makeAPICall: makeAPICallHandler,
     successAPICall: successAPICallHandler,
-    failureAPICall: failureAPICallHandler
+    failureAPICall: failureAPICallHandler,
+    closeErrors: closeErrorsHandler
   }
 
   return (
