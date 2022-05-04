@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react'
 
 import axios from 'axios'
 import Table from 'react-bootstrap/Table';
-import classes from "./SingleList.module.css"
+import classes from "./StockList.module.css"
 
 import CartContext from "../store/stock-context"
 import StockListRow from './StockListRow';
@@ -40,7 +40,6 @@ const StockList = (props) => {
 
   const cardMapList = stocks.map((element) => {
     return (
-
       <StockListRow
         stock={element}
         key={element.id}
@@ -48,7 +47,6 @@ const StockList = (props) => {
         onCloseTrade={props.onCloseTrade}
         raiseStock={raiseStock}
       />
-
     )
   })
 
@@ -60,6 +58,7 @@ const StockList = (props) => {
       </div>
       {stockListLoading ? <Loader /> :
         <div className={classes.table}>
+          {/* <Table responsive="xl" variant="dark"> */}
           <Table responsive="xl">
             <thead>
               <tr>

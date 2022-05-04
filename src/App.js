@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import './App.css';
-import CardList from './components/CardList';
 import StockList from './components/StockList';
 import Trade from './components/UI/Trade';
 import CartContext from "./store/stock-context"
@@ -28,8 +27,6 @@ function App() {
     <>
       {showTrade && <Trade onCloseTrade={closeTradeHandler} stock={stock} />}
       <StockList onShowTrade={showTradeHandler} raiseStock={raiseStock} />
-      {/* <CardList onShowTrade={showTradeHandler}raiseStock={raiseStock} /> */}
-
     </>
 
   );

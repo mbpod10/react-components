@@ -1,3 +1,27 @@
+.table {
+  background-color: white;
+  font-family: arial;
+  margin: 0 auto;
+  width: 60%;
+  outline: dashed 1px black;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  padding: 15px;
+  background-color: rgb(37, 35, 35) !important;
+}
+
+.td {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+
+th,
+tr {
+  color: white
+}
+
 .main-container {
   padding: 30px;
 }
