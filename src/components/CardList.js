@@ -5,6 +5,7 @@ import axios from 'axios'
 import CartContext from "../store/stock-context"
 import SingleCard from './SingleCard'
 import classes from './CardList.module.css'
+import Loader from "./UI/Loader"
 
 let internationalNumberFormat = new Intl.NumberFormat('en-US')
 
@@ -53,18 +54,9 @@ const CardList = (props) => {
       <div className={classes['main-container']}>
         <div className={classes.heading}>
           <h1 className={classes['heading__title']}>S&P 500 Companies</h1>
-          {/* <p>${totalMoneyAmount.toFixed(2)}</p> */}
           <p>${internationalNumberFormat.format(totalMoneyAmount)}</p>
         </div>
-        {loading ?
-          <div className={classes.loaderDiv}>
-            <div className={classes.loader}></div>
-          </div>
-          :
-          <div className={classes.cardList}>
-            {cardMapList}
-          </div>
-        }
+        {loading ? <Loader /> : <div className={classes.cardList}> {cardMapList} </div>}
       </div>
     </>
   )

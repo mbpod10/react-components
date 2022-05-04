@@ -5,11 +5,12 @@ import Alert from 'react-bootstrap/Alert';
 
 import StockContext from '../../store/stock-context';
 import Form from 'react-bootstrap/Form';
+import Loader from './Loader';
 
 
 const ModalForm = (props) => {
   const amount = useRef(props.stock.amount)
-  const { changeAmount, error } = useContext(StockContext)
+  const { changeAmount, error, loading, makeAPICall } = useContext(StockContext)
 
   const onSubmitHandler = (event) => {
     event.preventDefault()
@@ -23,28 +24,33 @@ const ModalForm = (props) => {
 
   return (
     <>
-      <Form onSubmit={onSubmitHandler} className={classes.form}>
+      {loading ? <Loader /> :
+        <>
 
-        <div className={classes['formContainer']}>
-          <div className={classes.symbol}>
-            <Form.Label htmlFor="text">Symbol</Form.Label>
-            <Form.Control type="text" id="text" placeholder={`${props.stock.symbol}`} />
-          </div>
-          <div> {props.stock.name} </div>
-        </div>
+          <Form onSubmit={onSubmitHandler} className={classes.form}>
 
-        <div className={classes['formContainer']}>
-          <div>
-            <Form.Label htmlFor="number">Shares{" "}</Form.Label>
-            <input ref={amount} type='number' min='0' />
-          </div>
-          <Button name="buy" type='submit'>Buy</Button>
-          <Button name='sell' type='submit'>Sell</Button>
-        </div>
-      </Form>
-      {error && <Alert key="danger" variant="danger">{error}</Alert>}
+            <div className={classes['formContainer']}>
+              <div className={classes.symbol}>
+                <Form.Label htmlFor="text">Symbol</Form.Label>
+                <Form.Control type="text" id="text" placeholder={`${props.stock.symbol}`} />
+              </div>
+              <div> {props.stock.name} </div>
+            </div>
+
+            <div className={classes['formContainer']}>
+              <div>
+                <Form.Label htmlFor="number">Shares{" "}</Form.Label>
+                <input ref={amount} type='number' min='0' />
+              </div>
+              <Button name="buy" type='submit'>Buy</Button>
+              <Button name='sell' type='submit'>Sell</Button>
+            </div>
+          </Form>
+
+          {error && <Alert key="danger" variant="danger">{error}</Alert>}
+        </>
+      }
     </>
-
   )
 }
 
