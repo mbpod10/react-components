@@ -15,6 +15,7 @@ function App() {
   }
 
   const closeTradeHandler = () => {
+    console.log('Close Trade')
     setShowTrade(false)
   }
 

@@ -5,7 +5,8 @@ import axios from "axios";
 
 const defaultStockState = {
   stocks: [],
-  loading: false,
+  stockListLoading: false,
+  transactionLoading: false,
   error: false,
   totalMoney: 0
 }
@@ -19,16 +20,14 @@ const findStockIndex = (array, id) => {
 const dataReducer = (state, action) => {
 
   if (action.type === "MAKE_API_CALL") {
-    return {
-      ...state,
-      loading: true
-    }
+    if (action.handler === 'list') return { ...state, stockListLoading: true }
+    if (action.handler === 'transaction') return { ...state, transactionLoading: true }
   }
 
   if (action.type === "SUCCESS") {
     return {
       ...state,
-      loading: false,
+      stockListLoading: false,
       stocks: action.data
     }
   }
@@ -54,15 +53,11 @@ const dataReducer = (state, action) => {
       stocks: updatedStocks
     }
   }
+
   if (action.type === "AMOUNT_CHANGED") {
-    console.log(action.amount.current.value)
-    if (!action.amount.current.value) {
-      return {
-        ...state,
-        error: "Please enter a valid number"
-      }
-    }
-    const amount = parseInt(action.amount.current.value, 10)
+
+    // const amount = parseInt(action.amount.current.value, 10)
+    const amount = parseInt(action.amount, 10)
     const indexOfUpdatedItem = findStockIndex(state.stocks, action.id)
     const stock = state.stocks[indexOfUpdatedItem]
     const beforeAmount = stock.amount
@@ -71,44 +66,35 @@ const dataReducer = (state, action) => {
 
     if (action.transaction === "sell") {
       totalAmount = beforeAmount - amount
-      if (totalAmount === 0) totalAmount = 0
-      if (totalAmount < 0) {
-        return {
-          ...state,
-          error: `You only have ${stock.amount} shares to sell`
-        }
-      }
     }
-
     if (action.transaction === "buy") {
       totalAmount = beforeAmount + amount
     }
 
     const updatedStock = { ...stock, amount: totalAmount }
-    try {
-      axios.post(`http://localhost:4001/stocks/${action.id}`,
-        { amount: totalAmount })
-    } catch (error) {
-      console.error(error);
-      return { ...state, error: error }
-    }
+
     let updatedStocks = [...state.stocks]
     updatedStocks[indexOfUpdatedItem] = updatedStock
 
     return {
       ...state,
       stocks: updatedStocks,
-      error: false
+      error: null,
+      stockListLoading: false,
+      transactionLoading: false,
     }
   }
-  return {
-    ...state,
-    error: false
+  if (action.type === "ERROR") {
+    if (action.handler === 'transaction') return { ...state, error: action.error }
   }
 }
 
 const StockProvider = (props) => {
   const [stockState, dispatch] = useReducer(dataReducer, defaultStockState)
+
+  const failureAPICallHandler = (error, handler) => {
+    dispatch({ type: "ERROR", error: error, handler: handler })
+  }
 
   const toggleOwnedHandler = (id) => {
     dispatch({ type: 'OWNED_TOGGLE', id: id })
@@ -118,8 +104,8 @@ const StockProvider = (props) => {
     dispatch({ type: 'AMOUNT_CHANGED', id: id, amount: amount, transaction: transaction })
   }
 
-  const makeAPICallHandler = useCallback(() => {
-    dispatch({ type: "MAKE_API_CALL" })
+  const makeAPICallHandler = useCallback((handler) => {
+    dispatch({ type: "MAKE_API_CALL", handler: handler })
   }, [])
 
   const successAPICallHandler = useCallback((data) => {
@@ -128,13 +114,15 @@ const StockProvider = (props) => {
 
   const stockContext = {
     stocks: stockState.stocks,
-    loading: stockState.loading,
+    stockListLoading: stockState.stockListLoading,
+    transactionLoading: stockState.transactionLoading,
     error: stockState.error,
     totalMoney: stockState.totalMoney,
     changeAmount: changeAmountHandler,
     toggleOwned: toggleOwnedHandler,
     makeAPICall: makeAPICallHandler,
-    successAPICall: successAPICallHandler
+    successAPICall: successAPICallHandler,
+    failureAPICall: failureAPICallHandler
   }
 
   return (

@@ -3,30 +3,41 @@ import classes from "./ModalForm.module.css"
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
+import axios from 'axios';
+
 import StockContext from '../../store/stock-context';
 import Form from 'react-bootstrap/Form';
 import Loader from './Loader';
 
 
 const ModalForm = (props) => {
+
   const amount = useRef(props.stock.amount)
-  const { changeAmount, error, loading, makeAPICall } = useContext(StockContext)
+  const { changeAmount, error, transactionLoading, makeAPICall, failureAPICall } = useContext(StockContext)
 
   const onSubmitHandler = (event) => {
     event.preventDefault()
     let transaction = event.nativeEvent.submitter.name
-    changeAmount(props.stock.id, amount, transaction)
-    if (error) {
-      return
+
+    makeAPICall('transaction')
+
+    try {
+      const response = axios.post(`http://localhost:4001/stocks/${props.stock.id}`,
+        { amount: amount.current.value, transaction: transaction })
+      console.log(response)
+      changeAmount(props.stock.id, amount.current.value, transaction)
+      props.onCloseTrade()
     }
-    props.onCloseTrade()
+    catch (error) {
+      console.log(error.response.data.error)
+      failureAPICall(error.response.data.error, 'transaction')
+    }
   }
 
   return (
     <>
-      {loading ? <Loader /> :
+      {transactionLoading ? <Loader /> :
         <>
-
           <Form onSubmit={onSubmitHandler} className={classes.form}>
 
             <div className={classes['formContainer']}>

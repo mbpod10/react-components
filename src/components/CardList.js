@@ -11,14 +11,14 @@ let internationalNumberFormat = new Intl.NumberFormat('en-US')
 
 const CardList = (props) => {
 
-  const { makeAPICall, successAPICall, loading, stocks } = useContext(CartContext)
+  const { makeAPICall, successAPICall, stockListLoading, stocks } = useContext(CartContext)
 
   const totalMoneyAmount = stocks.reduce((currentStock, stock) => {
     return currentStock + (stock.price * stock.amount)
   }, 0)
 
   useEffect(() => {
-    makeAPICall()
+    makeAPICall('list')
     const makeAPICallUse = async () => {
       try {
         const response = await axios.get('http://localhost:4001/stocks');
@@ -56,7 +56,7 @@ const CardList = (props) => {
           <h1 className={classes['heading__title']}>S&P 500 Companies</h1>
           <p>${internationalNumberFormat.format(totalMoneyAmount)}</p>
         </div>
-        {loading ? <Loader /> : <div className={classes.cardList}> {cardMapList} </div>}
+        {stockListLoading ? <Loader /> : <div className={classes.cardList}> {cardMapList} </div>}
       </div>
     </>
   )

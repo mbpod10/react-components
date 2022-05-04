@@ -4,9 +4,11 @@ const StockContext = React.createContext({
   stocks: [],
   changeAmount: (id, amount) => { },
   toggleOwned: (id) => { },
-  makeAPICall: () => { },
+  makeAPICall: (handler) => { },
   successAPICall: () => { },
-  loading: null,
+  failureAPICall: (error, handler) => { },
+  stockListLoading: null,
+  transactionLoading: null,
   error: null,
   totalMoney: null
 })
