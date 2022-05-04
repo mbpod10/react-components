@@ -1,0 +1,51 @@
+.table {
+  background-color: white;
+  font-family: arial;
+  margin: 0 auto;
+  width: 75%;
+  outline: dashed 1px black;
+}
+
+.td {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+
+.main-container {
+  padding: 30px;
+}
+
+/* HEADING */
+
+.heading {
+  text-align: center;
+}
+
+.heading__title {
+  font-weight: 600;
+}
+
+.heading__credits {
+  margin: 10px 0px;
+  color: #888888;
+  font-size: 25px;
+  transition: all 0.5s;
+}
+
+.heading__link {
+  text-decoration: none;
+}
+
+.heading__credits .heading__link {
+  color: inherit;
+}
+
+.cardList {
+  display: flex;
+  flex: row;
+  flex-wrap: wrap;
+
+  justify-content: center;
+}

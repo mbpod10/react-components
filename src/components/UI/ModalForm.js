@@ -26,7 +26,6 @@ const ModalForm = (props) => {
     const makeTransactionCall = async () => {
       let response = await axios.post(`http://localhost:4001/stocks/${props.stock.id}`,
         { amount: tempAmount, transaction: transaction })
-      console.log(response)
       if (response.data.error) {
         failureAPICall(response.data.error, 'transaction')
         return;

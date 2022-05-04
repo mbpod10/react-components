@@ -13,3 +13,7 @@ h6 {
   flex-direction: row;
   justify-content: space-around;
 }
+
+.btn2 {
+  align-items: flex-end !important;
+}

@@ -56,7 +56,6 @@ const dataReducer = (state, action) => {
 
   if (action.type === "AMOUNT_CHANGED") {
 
-    // const amount = parseInt(action.amount.current.value, 10)
     const amount = parseInt(action.amount, 10)
     const indexOfUpdatedItem = findStockIndex(state.stocks, action.id)
     const stock = state.stocks[indexOfUpdatedItem]
@@ -88,7 +87,7 @@ const dataReducer = (state, action) => {
     if (action.handler === 'transaction') return { ...state, error: action.error, transactionLoading: false }
   }
   if (action.type === "CLOSE_ALL_ERRORS") {
-    return { ...state, error: false }
+    return { ...state, error: false, stockListLoading: false, transactionLoading: false, }
   }
 }
 

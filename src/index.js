@@ -11,7 +11,6 @@ root.render(
   <React.StrictMode>
     <StockProvider>
       <App />
-
     </StockProvider>
   </React.StrictMode>
 );

@@ -3,13 +3,14 @@ import Modal from './Modal'
 import ModalForm from './ModalForm';
 
 import classes from "./Trade.module.css"
-import Button from 'react-bootstrap/Button';
+import CloseButton from 'react-bootstrap/CloseButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
 const Trade = (props) => {
   return (
     <Modal onCloseTrade={props.onCloseTrade}>
+      <CloseButton onClick={props.onCloseTrade} className={classes.btn2} />
       <h3>Trade</h3>
       <div className={classes.container}>
         {props.stock.owned ?
@@ -28,7 +29,7 @@ const Trade = (props) => {
             <h6> You don't own this stock</h6>
             <h6>
               <FontAwesomeIcon
-                style={{ color: 'green' }}
+                style={{ color: 'red' }}
                 icon={faPlusCircle}
                 size="2x" />
             </h6>
@@ -41,7 +42,6 @@ const Trade = (props) => {
         onCloseTrade={props.onCloseTrade}
         stock={props.stock}
       />
-      <Button className={classes.button} onClick={props.onCloseTrade}>Close</Button>
     </Modal>
   )
 }
