@@ -1,21 +1,9 @@
-// import React, { useContext } from 'react'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 import classes from "./StockListRow.module.css"
 import Button from 'react-bootstrap/Button';
 
-// import StockContext from '../store/stock-context';
-
-
-
 function StockListRow(props) {
-
-  // const stockCtx = useContext(StockContext)
-
-  // const ownedToggleHandler = (id) => {
-  //   stockCtx.toggleOwned(id)
-  // }
 
   const onTradeClick = (event) => {
     event.preventDefault()
@@ -32,15 +20,13 @@ function StockListRow(props) {
       <td className={classes.odd}> {props.stock.owned
         ?
         <FontAwesomeIcon
-          // onClick={() => ownedToggleHandler(props.stock.id)}
           style={{ color: 'green' }}
           icon={faCheck}
           size="2x" />
         :
         <FontAwesomeIcon
-          // onClick={() => ownedToggleHandler(props.stock.id)}
           style={{ color: 'red' }}
-          icon={faPlusCircle}
+          icon={faTimes}
           size="2x" />
       }
       </td>

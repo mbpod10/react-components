@@ -41,7 +41,6 @@ const ModalForm = (props) => {
       {transactionLoading ? <Loader /> :
         <>
           <Form onSubmit={onSubmitHandler} className={classes.form}>
-
             <div className={classes['formContainer']}>
               <div className={classes.symbol}>
                 <Form.Label htmlFor="text">Symbol</Form.Label>
@@ -59,7 +58,6 @@ const ModalForm = (props) => {
               <Button name='sell' type='submit'>Sell</Button>
             </div>
           </Form>
-
           {error && <Alert key="danger" variant="danger">{error}</Alert>}
         </>
       }

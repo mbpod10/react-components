@@ -24,6 +24,7 @@ const StockList = (props) => {
       try {
         const response = await axios.get('http://localhost:4001/stocks');
         successAPICall(response.data)
+        // console.log(JSON.stringify(response.data))
       } catch (error) {
         console.error(error);
       }
