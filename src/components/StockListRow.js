@@ -11,9 +11,10 @@ function StockListRow(props) {
     props.raiseStock(props.stock.id)
   }
 
+
   return (
-    <tr>
-      <td className={`${classes.symbol} ${classes.odd}`}>${props.stock.symbol}</td>
+    <>
+      <td className={`${classes.symbol} ${classes.odd}`}>{props.stock.id}${props.stock.symbol}</td>
       <td className={classes.even}>{props.stock.name}</td>
       <td className={classes.odd}><Button onClick={onTradeClick}>Trade</Button></td>
       <td className={classes.even}>${props.stock.price.toFixed(2)}</td>
@@ -31,7 +32,7 @@ function StockListRow(props) {
       }
       </td>
       <td className={classes.even}>{props.stock.amount}</td>
-    </tr>
+    </>
   )
 }
 
