@@ -1,36 +1,43 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useContext, useState, useRef, useCallback, useMemo } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 
-import axios from 'axios'
+import useStockPaginate from '../store/useStockPaginate';
+
+import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import classes from "./StockList.module.css"
 
-import CartContext from "../store/stock-context"
-import StockListRow from './StockListRow';
+import StockContext from "../store/stock-context"
+// import StockListRow from './StockListRow';
 import Loader from './UI/Loader';
 
 let internationalNumberFormat = new Intl.NumberFormat('en-US')
 
 const StockList = (props) => {
 
-  const { makeAPICall, successAPICall, stockListLoading, stocks } = useContext(CartContext)
+  const [pageNumber, setPageNumber] = useState(1)
+  // const [pageNumber, setPageNumber] = useRef(1)
+  const { hasMore } = useStockPaginate(pageNumber)
+  const observer = useRef()
 
-  const totalMoneyAmount = stocks.reduce((currentStock, stock) => {
-    return currentStock + (stock.price * stock.amount)
-  }, 0)
+  const { stockListLoading, stocks } = useContext(StockContext)
 
-  useEffect(() => {
-    makeAPICall('list')
-    const makeAPICallUse = async () => {
-      try {
-        const response = await axios.get('http://localhost:4001/stocks');
-        successAPICall(response.data)
-        // console.log(JSON.stringify(response.data))
-      } catch (error) {
-        console.error(error);
+  // console.log(stocks)
+
+  const lastStockElement = useCallback(node => {
+    // const lastStockElement = useMemo(node => {
+    if (stockListLoading) return
+    if (observer.current) observer.current.disconnect()
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        setPageNumber(prevPage => prevPage + 1)
       }
-    }
-    makeAPICallUse()
-  }, [makeAPICall, successAPICall])
+    })
+    if (node) observer.current.observe(node)
+    // console.log(node)
+  }, [stockListLoading, hasMore])
+
 
   const raiseStock = (id) => {
     let formStock = stocks.filter((stock) => {
@@ -38,18 +45,76 @@ const StockList = (props) => {
     })
     props.raiseStock(formStock[0])
   }
+  const onTradeClick = () => {
 
-  const cardMapList = stocks.map((element) => {
-    return (
-      <StockListRow
-        stock={element}
-        key={element.id}
-        onShowTrade={props.onShowTrade}
-        onCloseTrade={props.onCloseTrade}
-        raiseStock={raiseStock}
-      />
-    )
+  }
+
+  const cardMapList = stocks.map((element, index) => {
+
+    if (stocks.length === index + 1) {
+      return (
+        // <StockListRow
+        //   ref={lastStockElement}
+        //   stock={element}
+        //   key={element.id}
+        //   onShowTrade={props.onShowTrade}
+        //   onCloseTrade={props.onCloseTrade}
+        //   raiseStock={raiseStock}
+        // />
+        <tr ref={lastStockElement} key={element.id}>
+          <td className={`${classes.symbol} ${classes.odd}`}>{element.id}${element.symbol}</td>
+          <td className={classes.even}>{element.name}</td>
+          <td className={classes.odd}><Button onClick={onTradeClick}>Trade</Button></td>
+          {/* <td className={classes.even}>${element.price.toFixed(2)}</td> */}
+          <td className={classes.even}>${element.price}</td>
+          <td className={classes.odd}> {element.owned
+            ?
+            <FontAwesomeIcon
+              style={{ color: 'green' }}
+              icon={faCheck}
+              size="2x" />
+            :
+            <FontAwesomeIcon
+              style={{ color: 'red' }}
+              icon={faTimes}
+              size="2x" />
+          }
+          </td>
+          <td className={classes.even}>{element.amount}</td>
+        </tr>
+      )
+    }
+    else {
+      return (
+        <tr ref={lastStockElement} key={element.id}>
+          <td className={`${classes.symbol} ${classes.odd}`}>{element.id}${element.symbol}</td>
+          <td className={classes.even}>{element.name}</td>
+          <td className={classes.odd}><Button onClick={onTradeClick}>Trade</Button></td>
+          {/* <td className={classes.even}>${element.price.toFixed(2)}</td> */}
+          <td className={classes.even}>${element.price}</td>
+          <td className={classes.odd}> {element.owned
+            ?
+            <FontAwesomeIcon
+              style={{ color: 'green' }}
+              icon={faCheck}
+              size="2x" />
+            :
+            <FontAwesomeIcon
+              style={{ color: 'red' }}
+              icon={faTimes}
+              size="2x" />
+          }
+          </td>
+          <td className={classes.even}>{element.amount}</td>
+        </tr>
+      )
+    }
   })
+
+
+  const totalMoneyAmount = stocks.reduce((currentStock, stock) => {
+    return currentStock + (stock.price * stock.amount)
+  }, 0)
 
   return (
     <>
@@ -59,7 +124,6 @@ const StockList = (props) => {
       </div>
       {stockListLoading ? <Loader /> :
         <div className={classes.table}>
-          {/* <Table responsive="xl" variant="dark"> */}
           <Table responsive="xl">
             <thead>
               <tr>

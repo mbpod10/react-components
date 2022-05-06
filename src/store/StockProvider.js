@@ -1,4 +1,4 @@
-import { useReducer, useCallback } from "react";
+import { useReducer, useCallback, useMemo } from "react";
 
 import StockContext from "./stock-context";
 import axios from "axios";
@@ -25,10 +25,22 @@ const dataReducer = (state, action) => {
   }
 
   if (action.type === "SUCCESS") {
+    console.log('rerender')
+    let newStocks
+    if (state.stocks.length && action.data.length && state.stocks[0].id === action.data[0].id) {
+      // newStocks = [...new Set([...state.stocks, ...action.data])]
+      newStocks = state.stocks
+    }
+    else {
+      // newStocks = [...new Set([...state.stocks, ...action.data])]
+      newStocks = state.stocks.concat(action.data)
+    }
+
     return {
       ...state,
       stockListLoading: false,
-      stocks: action.data
+      // stocks: action.data
+      stocks: newStocks
     }
   }
 
@@ -113,6 +125,13 @@ const StockProvider = (props) => {
   const successAPICallHandler = useCallback((data) => {
     dispatch({ type: "SUCCESS", data: data })
   }, [])
+  // const makeAPICallHandler = (handler) => {
+  //   dispatch({ type: "MAKE_API_CALL", handler: handler })
+  // }
+
+  // const successAPICallHandler = (data) => {
+  //   dispatch({ type: "SUCCESS", data: data })
+  // }
 
   const closeErrorsHandler = () => {
     dispatch({ type: "CLOSE_ALL_ERRORS" })
