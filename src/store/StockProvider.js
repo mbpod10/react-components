@@ -1,4 +1,4 @@
-import { useReducer, useCallback, useMemo } from "react";
+import { useReducer, useCallback } from "react";
 
 import StockContext from "./stock-context";
 import axios from "axios";
@@ -26,22 +26,18 @@ const dataReducer = (state, action) => {
   }
 
   if (action.type === "SUCCESS") {
-    console.log('rerender')
+
     let newStocks = []
     if (state.stocks.length && action.data.length && state.stocks[0].id === action.data[0].id) {
-      // newStocks = [...new Set([...state.stocks, ...action.data])]
       newStocks = state.stocks
     }
     else {
-      // newStocks = [...new Set([...state.stocks, ...action.data])]
       newStocks = state.stocks.concat(action.data)
-      // newStocks.push([...action.data])
     }
 
     return {
       ...state,
       stockListLoading: false,
-      // stocks: action.data
       stocks: newStocks
     }
   }
@@ -104,7 +100,6 @@ const dataReducer = (state, action) => {
     return { ...state, error: false, stockListLoading: false, transactionLoading: false, }
   }
   if (action.type === "NEXT_PAGE") {
-    console.log("page number", `${state.pageNumber}`)
     let nextPage = state.pageNumber + 1
     return {
       ...state,
@@ -139,10 +134,6 @@ const StockProvider = (props) => {
   const closeErrorsHandler = () => {
     dispatch({ type: "CLOSE_ALL_ERRORS" })
   }
-
-  // const nextPageHandler = useCallback((pageNum) => {
-  //   dispatch({ type: "NEXT_PAGE", pageNum: pageNum })
-  // }, [])
 
   const nextPageHandler = useCallback(() => {
     dispatch({ type: "NEXT_PAGE" })

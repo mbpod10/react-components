@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef, useCallback, useMemo } from 'react'
+import React, { useContext, useRef, useCallback } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 
@@ -9,32 +9,31 @@ import Table from 'react-bootstrap/Table';
 import classes from "./StockList.module.css"
 
 import StockContext from "../store/stock-context"
+// import StockListRow from './StockListRow';
 import Loader from './UI/Loader';
 
 let internationalNumberFormat = new Intl.NumberFormat('en-US')
 
 const StockList = (props) => {
 
-  // const { stocks} = useContext(StockContext)
-  // const { stockListLoading, stocks, pageNumber, nextPage } = useContext(StockContext)
 
-  const [pageNumber, setPageNumber] = useState(1)
-  const { stocks, hasMore, stockListLoading } = useStockPaginate(pageNumber)
+  const { stockListLoading, stocks, pageNumber, nextPage } = useContext(StockContext)
+  const { hasMore } = useStockPaginate(pageNumber)
   const observer = useRef()
+
 
   const lastStockElement = useCallback(node => {
     if (stockListLoading) return
     if (observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
-        setPageNumber(prevPage => prevPage + 1)
+        nextPage()
       }
     })
     if (node) {
       observer.current.observe(node)
     }
-    // console.log(node)
-  }, [stockListLoading, hasMore])
+  }, [stockListLoading, hasMore, nextPage])
 
 
   const raiseStock = (id) => {
@@ -45,13 +44,14 @@ const StockList = (props) => {
     console.log(formStock)
     props.raiseStock(formStock[0])
   }
-  const onTradeClick = () => {
 
-  }
+  // const onTradeClick = () => {
+
+  // }
 
   const cardMapList = stocks.map((element, index) => {
 
-    if (stocks.length === index + 1) {
+    if (stocks.length === index) {
       return (
         // <StockListRow
         //   ref={lastStockElement}
@@ -65,8 +65,8 @@ const StockList = (props) => {
           <td className={`${classes.symbol} ${classes.odd}`}>{element.id}${element.symbol}</td>
           <td className={classes.even}>{element.name}</td>
           <td className={classes.odd}><Button onClick={() => raiseStock(element.id)}>Trade</Button></td>
-          {/* <td className={classes.even}>${element.price.toFixed(2)}</td> */}
-          <td className={classes.even}>${element.price}</td>
+          <td className={classes.even}>${element.price.toFixed(2)}</td>
+          {/* <td className={classes.even}>${element.price}</td> */}
           <td className={classes.odd}> {element.owned
             ?
             <FontAwesomeIcon
@@ -90,8 +90,8 @@ const StockList = (props) => {
           <td className={`${classes.symbol} ${classes.odd}`}>{element.id}${element.symbol}</td>
           <td className={classes.even}>{element.name}</td>
           <td className={classes.odd}><Button onClick={() => raiseStock(element.id)}>Trade</Button></td>
-          {/* <td className={classes.even}>${element.price.toFixed(2)}</td> */}
-          <td className={classes.even}>${element.price}</td>
+          <td className={classes.even}>${element.price.toFixed(2)}</td>
+          {/* <td className={classes.even}>${element.price}</td> */}
           <td className={classes.odd}> {element.owned
             ?
             <FontAwesomeIcon
@@ -122,25 +122,25 @@ const StockList = (props) => {
         <h1 className={classes['heading__title']}>S&P 500 Companies</h1>
         <p>${internationalNumberFormat.format(totalMoneyAmount)}</p>
       </div>
-      {stockListLoading ? <Loader /> :
-        <div className={classes.table}>
-          <Table responsive="xl">
-            <thead>
-              <tr>
-                <th>Symbol</th>
-                <th>Name</th>
-                <th>Trade</th>
-                <th>Price</th>
-                <th>Owned</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cardMapList}
-            </tbody>
-          </Table>
-        </div>
-      }
+      <div className={classes.table}>
+        <Table responsive="xl">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Name</th>
+              <th>Trade</th>
+              <th>Price</th>
+              <th>Owned</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cardMapList}
+          </tbody>
+        </Table>
+      </div>
+      {stockListLoading && <Loader />}
+
     </>
   )
 }

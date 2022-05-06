@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useState } from 'react';
 import './App.css';
 import StockList from './components/StockList';
 import Trade from './components/UI/Trade';
