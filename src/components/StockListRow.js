@@ -18,18 +18,13 @@ function StockListRow(props) {
       <td className={classes.even}>{props.stock.name}</td>
       <td className={classes.odd}><Button onClick={onTradeClick}>Trade</Button></td>
       <td className={classes.even}>${props.stock.price.toFixed(2)}</td>
-      <td className={classes.odd}> {props.stock.owned
-        ?
-        <FontAwesomeIcon
-          style={{ color: 'green' }}
-          icon={faCheck}
-          size="2x" />
-        :
-        <FontAwesomeIcon
-          style={{ color: 'red' }}
-          icon={faTimes}
-          size="2x" />
-      }
+      <td className={classes.odd}>
+        {
+          props.stock.owned ?
+            <FontAwesomeIcon style={{ color: 'green' }} icon={faCheck} size="2x" />
+            :
+            <FontAwesomeIcon style={{ color: 'red' }} icon={faTimes} size="2x" />
+        }
       </td>
       <td className={classes.even}>{props.stock.amount}</td>
     </>

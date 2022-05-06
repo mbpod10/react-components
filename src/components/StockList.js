@@ -2,9 +2,8 @@ import React, { useContext, useRef, useCallback } from 'react'
 
 import useStockPaginate from '../store/useStockPaginate';
 
-import Table from 'react-bootstrap/Table';
 import classes from "./StockList.module.css"
-
+import StockTable from './StockTable';
 import StockContext from "../store/stock-context"
 import StockListRow from './StockListRow';
 import Loader from './UI/Loader';
@@ -68,25 +67,10 @@ const StockList = (props) => {
         <h1 className={classes['heading__title']}>S&P 500 Companies</h1>
         <p>${internationalNumberFormat.format(totalMoneyAmount)}</p>
       </div>
-      <div className={classes.table}>
-        <Table responsive="xl">
-          <thead>
-            <tr>
-              <th>Symbol</th>
-              <th>Name</th>
-              <th>Trade</th>
-              <th>Price</th>
-              <th>Owned</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cardMapList}
-          </tbody>
-        </Table>
-      </div>
+      <StockTable >
+        {cardMapList}
+      </StockTable>
       {stockListLoading && <Loader />}
-
     </>
   )
 }
