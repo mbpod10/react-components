@@ -8,7 +8,8 @@ const defaultStockState = {
   stockListLoading: false,
   transactionLoading: false,
   error: false,
-  totalMoney: 0
+  totalMoney: 0,
+  pageNumber: 1
 }
 
 const findStockIndex = (array, id) => {
@@ -26,7 +27,7 @@ const dataReducer = (state, action) => {
 
   if (action.type === "SUCCESS") {
     console.log('rerender')
-    let newStocks
+    let newStocks = []
     if (state.stocks.length && action.data.length && state.stocks[0].id === action.data[0].id) {
       // newStocks = [...new Set([...state.stocks, ...action.data])]
       newStocks = state.stocks
@@ -34,6 +35,7 @@ const dataReducer = (state, action) => {
     else {
       // newStocks = [...new Set([...state.stocks, ...action.data])]
       newStocks = state.stocks.concat(action.data)
+      // newStocks.push([...action.data])
     }
 
     return {
@@ -101,6 +103,14 @@ const dataReducer = (state, action) => {
   if (action.type === "CLOSE_ALL_ERRORS") {
     return { ...state, error: false, stockListLoading: false, transactionLoading: false, }
   }
+  if (action.type === "NEXT_PAGE") {
+    console.log("page number", `${state.pageNumber}`)
+    let nextPage = state.pageNumber + 1
+    return {
+      ...state,
+      pageNumber: nextPage
+    }
+  }
 }
 
 const StockProvider = (props) => {
@@ -125,17 +135,18 @@ const StockProvider = (props) => {
   const successAPICallHandler = useCallback((data) => {
     dispatch({ type: "SUCCESS", data: data })
   }, [])
-  // const makeAPICallHandler = (handler) => {
-  //   dispatch({ type: "MAKE_API_CALL", handler: handler })
-  // }
-
-  // const successAPICallHandler = (data) => {
-  //   dispatch({ type: "SUCCESS", data: data })
-  // }
 
   const closeErrorsHandler = () => {
     dispatch({ type: "CLOSE_ALL_ERRORS" })
   }
+
+  // const nextPageHandler = useCallback((pageNum) => {
+  //   dispatch({ type: "NEXT_PAGE", pageNum: pageNum })
+  // }, [])
+
+  const nextPageHandler = useCallback(() => {
+    dispatch({ type: "NEXT_PAGE" })
+  }, [])
 
   const stockContext = {
     stocks: stockState.stocks,
@@ -143,12 +154,14 @@ const StockProvider = (props) => {
     transactionLoading: stockState.transactionLoading,
     error: stockState.error,
     totalMoney: stockState.totalMoney,
+    pageNumber: stockState.pageNumber,
     changeAmount: changeAmountHandler,
     toggleOwned: toggleOwnedHandler,
     makeAPICall: makeAPICallHandler,
     successAPICall: successAPICallHandler,
     failureAPICall: failureAPICallHandler,
-    closeErrors: closeErrorsHandler
+    closeErrors: closeErrorsHandler,
+    nextPage: nextPageHandler,
   }
 
   return (

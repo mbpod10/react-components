@@ -16,14 +16,15 @@ let internationalNumberFormat = new Intl.NumberFormat('en-US')
 
 const StockList = (props) => {
 
-  const [pageNumber, setPageNumber] = useState(1)
+  // const [pageNumber, setPageNumber] = useState(1)
+  const { stockListLoading, stocks, pageNumber, nextPage } = useContext(StockContext)
   // const [pageNumber, setPageNumber] = useRef(1)
   const { hasMore } = useStockPaginate(pageNumber)
   const observer = useRef()
 
-  const { stockListLoading, stocks } = useContext(StockContext)
-
+  // let newStocks = useRef(stocks)
   // console.log(stocks)
+  // const [newStocks, setNewStocks] = useState(stocks)
 
   const lastStockElement = useCallback(node => {
     // const lastStockElement = useMemo(node => {
@@ -31,12 +32,16 @@ const StockList = (props) => {
     if (observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
-        setPageNumber(prevPage => prevPage + 1)
+        // setPageNumber(prevPage => prevPage + 1)
+        nextPage()
       }
     })
-    if (node) observer.current.observe(node)
+    if (node) {
+      observer.current.observe(node)
+      // this.scrollToBottom()
+    }
     // console.log(node)
-  }, [stockListLoading, hasMore])
+  }, [stockListLoading, hasMore, nextPage])
 
 
   const raiseStock = (id) => {
@@ -64,7 +69,7 @@ const StockList = (props) => {
         <tr ref={lastStockElement} key={element.id}>
           <td className={`${classes.symbol} ${classes.odd}`}>{element.id}${element.symbol}</td>
           <td className={classes.even}>{element.name}</td>
-          <td className={classes.odd}><Button onClick={onTradeClick}>Trade</Button></td>
+          <td className={classes.odd}><Button onClick={() => raiseStock(element.id)}>Trade</Button></td>
           {/* <td className={classes.even}>${element.price.toFixed(2)}</td> */}
           <td className={classes.even}>${element.price}</td>
           <td className={classes.odd}> {element.owned
@@ -89,7 +94,7 @@ const StockList = (props) => {
         <tr ref={lastStockElement} key={element.id}>
           <td className={`${classes.symbol} ${classes.odd}`}>{element.id}${element.symbol}</td>
           <td className={classes.even}>{element.name}</td>
-          <td className={classes.odd}><Button onClick={onTradeClick}>Trade</Button></td>
+          <td className={classes.odd}><Button onClick={() => raiseStock(element.id)}>Trade</Button></td>
           {/* <td className={classes.even}>${element.price.toFixed(2)}</td> */}
           <td className={classes.even}>${element.price}</td>
           <td className={classes.odd}> {element.owned

@@ -8,10 +8,12 @@ const StockContext = React.createContext({
   successAPICall: () => { },
   failureAPICall: (error, handler) => { },
   closeErrors: () => { },
+  nextPage: () => { },
   stockListLoading: null,
   transactionLoading: null,
   error: null,
-  totalMoney: null
+  totalMoney: null,
+  pageNumber: null
 })
 
 export default StockContext

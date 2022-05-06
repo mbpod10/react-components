@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import './App.css';
 import StockList from './components/StockList';
 import Trade from './components/UI/Trade';
@@ -10,18 +10,18 @@ function App() {
   const [stock, setStock] = useState()
 
 
-  const showTradeHandler = () => {
+  const showTradeHandler = useRef(() => {
     setShowTrade(true)
-  }
+  }, [])
 
-  const closeTradeHandler = () => {
+  const closeTradeHandler = useRef(() => {
     setShowTrade(false)
     closeErrors()
-  }
+  }, [])
 
-  const raiseStock = (stock) => {
+  const raiseStock = useRef((stock) => {
     setStock(stock)
-  }
+  }, [])
 
   return (
     <>
