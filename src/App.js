@@ -10,18 +10,19 @@ function App() {
   const [stock, setStock] = useState()
 
 
-  const showTradeHandler = useRef(() => {
+  const showTradeHandler = () => {
     setShowTrade(true)
-  }, [])
+  }
 
-  const closeTradeHandler = useRef(() => {
+  const closeTradeHandler = () => {
     setShowTrade(false)
     closeErrors()
-  }, [])
+  }
 
-  const raiseStock = useRef((stock) => {
+  const raiseStock = (stock) => {
     setStock(stock)
-  }, [])
+    showTradeHandler()
+  }
 
   return (
     <>

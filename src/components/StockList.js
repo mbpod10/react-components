@@ -9,45 +9,40 @@ import Table from 'react-bootstrap/Table';
 import classes from "./StockList.module.css"
 
 import StockContext from "../store/stock-context"
-// import StockListRow from './StockListRow';
 import Loader from './UI/Loader';
 
 let internationalNumberFormat = new Intl.NumberFormat('en-US')
 
 const StockList = (props) => {
 
-  // const [pageNumber, setPageNumber] = useState(1)
-  const { stockListLoading, stocks, pageNumber, nextPage } = useContext(StockContext)
-  // const [pageNumber, setPageNumber] = useRef(1)
-  const { hasMore } = useStockPaginate(pageNumber)
+  // const { stocks} = useContext(StockContext)
+  // const { stockListLoading, stocks, pageNumber, nextPage } = useContext(StockContext)
+
+  const [pageNumber, setPageNumber] = useState(1)
+  const { stocks, hasMore, stockListLoading } = useStockPaginate(pageNumber)
   const observer = useRef()
 
-  // let newStocks = useRef(stocks)
-  // console.log(stocks)
-  // const [newStocks, setNewStocks] = useState(stocks)
-
   const lastStockElement = useCallback(node => {
-    // const lastStockElement = useMemo(node => {
     if (stockListLoading) return
     if (observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
-        // setPageNumber(prevPage => prevPage + 1)
-        nextPage()
+        setPageNumber(prevPage => prevPage + 1)
       }
     })
     if (node) {
       observer.current.observe(node)
-      // this.scrollToBottom()
     }
     // console.log(node)
-  }, [stockListLoading, hasMore, nextPage])
+  }, [stockListLoading, hasMore])
 
 
   const raiseStock = (id) => {
+    console.log(id, props.raiseStock)
     let formStock = stocks.filter((stock) => {
       return stock.id === id
     })
+    console.log(formStock)
     props.raiseStock(formStock[0])
   }
   const onTradeClick = () => {
