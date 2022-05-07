@@ -9,7 +9,8 @@ const defaultStockState = {
   transactionLoading: false,
   error: false,
   totalMoney: 0,
-  pageNumber: 1
+  pageNumber: 1,
+  transactionBool: false
 }
 
 const findStockIndex = (array, id) => {
@@ -65,22 +66,28 @@ const dataReducer = (state, action) => {
   }
 
   if (action.type === "AMOUNT_CHANGED") {
-
+    state.transactionBool = true
     const amount = parseInt(action.amount, 10)
     const indexOfUpdatedItem = findStockIndex(state.stocks, action.id)
     const stock = state.stocks[indexOfUpdatedItem]
     const beforeAmount = stock.amount
 
     let totalAmount
+    let updatedStock
 
     if (action.transaction === "sell") {
       totalAmount = beforeAmount - amount
+      if (totalAmount === 0) {
+        updatedStock = { ...stock, amount: totalAmount, owned: false }
+      }
+      else {
+        updatedStock = { ...stock, amount: totalAmount }
+      }
     }
     if (action.transaction === "buy") {
       totalAmount = beforeAmount + amount
+      updatedStock = { ...stock, amount: totalAmount, owned: true }
     }
-
-    const updatedStock = { ...stock, amount: totalAmount }
 
     let updatedStocks = [...state.stocks]
     updatedStocks[indexOfUpdatedItem] = updatedStock
@@ -91,6 +98,7 @@ const dataReducer = (state, action) => {
       error: null,
       stockListLoading: false,
       transactionLoading: false,
+      transactionBool: false
     }
   }
   if (action.type === "ERROR") {
@@ -146,6 +154,7 @@ const StockProvider = (props) => {
     error: stockState.error,
     totalMoney: stockState.totalMoney,
     pageNumber: stockState.pageNumber,
+    transactionBool: stockState.transactionBool,
     changeAmount: changeAmountHandler,
     toggleOwned: toggleOwnedHandler,
     makeAPICall: makeAPICallHandler,

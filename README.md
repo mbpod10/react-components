@@ -5,7 +5,7 @@ I spent close to 9 hours trying to get the stocks to successfully paginate with 
 ```js
 // Ref function
 const lastStockElement = useCallback(node => {
-    if (stockListLoading) return // <=====
+    if (stockListLoading) return // <=====================
     if (observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
@@ -19,7 +19,7 @@ const lastStockElement = useCallback(node => {
 ```
 I did this: 
 ```js
-  {stockListLoading ? <Loader /> : // <=====
+  {stockListLoading ? <Loader /> : // <====================
         <div className={classes.table}>
           <Table responsive="xl">
             <thead>
@@ -59,5 +59,5 @@ Instead of this
           </tbody>
         </Table>
       </div>
-      {stockListLoading && <Loader />} // <=====
+      {stockListLoading && <Loader />} // <===================
 ```

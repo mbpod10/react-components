@@ -7,15 +7,16 @@ import StockTable from './StockTable';
 import StockContext from "../store/stock-context"
 import StockListRow from './StockListRow';
 import Loader from './UI/Loader';
-
-let internationalNumberFormat = new Intl.NumberFormat('en-US')
+import useMoneyAmount from '../store/useMoneyAmount'
 
 const StockList = (props) => {
 
+  // THIS DOESN'T WORK BC IT ONLY RETURNS THE TOTAL OF RENDERED STOCKS
+  // NOT THE TOTAL AMOUNT OF MONEY OWNED THROUGH AN API CALL
+  const { totalAmount } = useMoneyAmount()
   const { stockListLoading, stocks, pageNumber, nextPage } = useContext(StockContext)
   const { hasMore } = useStockPaginate(pageNumber)
   const observer = useRef()
-
 
   const lastStockElement = useCallback(node => {
     if (stockListLoading) return
@@ -32,11 +33,9 @@ const StockList = (props) => {
 
 
   const raiseStock = (id) => {
-    console.log(id, props.raiseStock)
     let formStock = stocks.filter((stock) => {
       return stock.id === id
     })
-    console.log(formStock)
     props.raiseStock(formStock[0])
   }
 
@@ -57,15 +56,11 @@ const StockList = (props) => {
     }
   })
 
-  const totalMoneyAmount = stocks.reduce((currentStock, stock) => {
-    return currentStock + (stock.price * stock.amount)
-  }, 0)
-
   return (
     <>
       <div className={classes.heading}>
         <h1 className={classes['heading__title']}>S&P 500 Companies</h1>
-        <p>${internationalNumberFormat.format(totalMoneyAmount)}</p>
+        <p>{totalAmount}</p>
       </div>
       <StockTable >
         {cardMapList}

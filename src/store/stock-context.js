@@ -13,7 +13,8 @@ const StockContext = React.createContext({
   transactionLoading: null,
   error: null,
   totalMoney: null,
-  pageNumber: null
+  pageNumber: null,
+  transactionBool: null
 })
 
 export default StockContext
