@@ -22,6 +22,11 @@ tr {
   color: white
 }
 
+th:hover {
+  cursor: pointer;
+  color: aquamarine;
+}
+
 .main-container {
   padding: 30px;
 }

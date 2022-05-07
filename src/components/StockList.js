@@ -14,8 +14,8 @@ const StockList = (props) => {
   // THIS DOESN'T WORK BC IT ONLY RETURNS THE TOTAL OF RENDERED STOCKS
   // NOT THE TOTAL AMOUNT OF MONEY OWNED THROUGH AN API CALL
   const { totalAmount } = useMoneyAmount()
-  const { stockListLoading, stocks, pageNumber, nextPage } = useContext(StockContext)
-  const { hasMore } = useStockPaginate(pageNumber)
+  const { stockListLoading, stocks, pageNumber, orderBy, nextPage } = useContext(StockContext)
+  const { hasMore } = useStockPaginate(pageNumber, orderBy)
   const observer = useRef()
 
   const lastStockElement = useCallback(node => {

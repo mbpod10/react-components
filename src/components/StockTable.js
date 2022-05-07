@@ -1,20 +1,30 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import classes from './CSS/StockTable.module.css'
 import Table from 'react-bootstrap/Table';
+import StockContext from "../store/stock-context"
 
 const StockTable = (props) => {
+
+  const { changeOrderBy } = useContext(StockContext)
+
+  const changeFilterHandler = (name) => {
+    console.log(name)
+    // const filter = name.toLowerCase()
+    changeOrderBy(name)
+  }
+
   return (
     <div className={classes.table}>
       <Table responsive="xl">
         <thead>
           <tr>
-            <th>Symbol</th>
-            <th>Name</th>
+            <th onClick={() => changeFilterHandler('symbol')}>Symbol</th>
+            <th onClick={() => changeFilterHandler('name')}>Name</th>
             <th>Trade</th>
-            <th>Price</th>
+            <th onClick={() => changeFilterHandler('price')}>Price</th>
             <th>Owned</th>
-            <th>Amount</th>
+            <th onClick={() => changeFilterHandler('amount')}>Amount</th>
           </tr>
         </thead>
         <tbody>

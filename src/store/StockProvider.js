@@ -1,4 +1,4 @@
-import { useReducer, useCallback } from "react";
+import { useReducer, useCallback, useMemo } from "react";
 
 import StockContext from "./stock-context";
 
@@ -9,7 +9,8 @@ const defaultStockState = {
   error: false,
   totalMoney: 0,
   pageNumber: 1,
-  transactionBool: false
+  transactionBool: false,
+  orderBy: 'id'
 }
 
 const findStockIndex = (array, id) => {
@@ -91,6 +92,17 @@ const dataReducer = (state, action) => {
       pageNumber: nextPage
     }
   }
+  if (action.type === "CHANGE_FILTER") {
+    // let orderFilter
+    if (state.orderBy === action.order_by) {
+      return state
+    }
+    return {
+      ...state,
+      stocks: [],
+      orderBy: action.order_by,
+    }
+  }
 }
 
 const StockProvider = (props) => {
@@ -124,6 +136,10 @@ const StockProvider = (props) => {
     dispatch({ type: "NEXT_PAGE" })
   }, [])
 
+  const changeOrderByHandler = (order_by) => {
+    dispatch({ type: 'CHANGE_FILTER', order_by: order_by })
+  }
+
   const stockContext = {
     stocks: stockState.stocks,
     stockListLoading: stockState.stockListLoading,
@@ -132,6 +148,8 @@ const StockProvider = (props) => {
     totalMoney: stockState.totalMoney,
     pageNumber: stockState.pageNumber,
     transactionBool: stockState.transactionBool,
+    // orderBy: useMemo(() => stockState.orderBy, [stockState.orderBy]),
+    orderBy: stockState.orderBy,
     changeAmount: changeAmountHandler,
     toggleOwned: toggleOwnedHandler,
     makeAPICall: makeAPICallHandler,
@@ -139,6 +157,7 @@ const StockProvider = (props) => {
     failureAPICall: failureAPICallHandler,
     closeErrors: closeErrorsHandler,
     nextPage: nextPageHandler,
+    changeOrderBy: changeOrderByHandler
   }
 
   return (
