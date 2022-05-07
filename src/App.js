@@ -27,6 +27,7 @@ function App() {
 
   return (
     <>
+      <h1>HELLO</h1>
       <Navbar />
       {showTrade && <Trade onCloseTrade={closeTradeHandler} stock={stock} />}
       <StockList onShowTrade={showTradeHandler} raiseStock={raiseStock} />
