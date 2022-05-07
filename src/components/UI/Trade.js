@@ -2,7 +2,7 @@ import React from 'react'
 import Modal from './Modal'
 import ModalForm from './ModalForm';
 
-import classes from "./Trade.module.css"
+import classes from "../CSS/Trade.module.css"
 import CloseButton from 'react-bootstrap/CloseButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faPlusCircle } from '@fortawesome/free-solid-svg-icons'

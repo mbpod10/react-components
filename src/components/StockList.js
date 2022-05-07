@@ -2,7 +2,7 @@ import React, { useContext, useRef, useCallback } from 'react'
 
 import useStockPaginate from '../store/useStockPaginate';
 
-import classes from "./StockList.module.css"
+import classes from "./CSS/StockList.module.css"
 import StockTable from './StockTable';
 import StockContext from "../store/stock-context"
 import StockListRow from './StockListRow';

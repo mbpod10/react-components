@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
-import classes from "./StockListRow.module.css"
+import classes from "./CSS/StockListRow.module.css"
 import Button from 'react-bootstrap/Button';
 
 function StockListRow(props) {

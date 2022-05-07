@@ -1,7 +1,6 @@
 import { useReducer, useCallback } from "react";
 
 import StockContext from "./stock-context";
-import axios from "axios";
 
 const defaultStockState = {
   stocks: [],
@@ -40,28 +39,6 @@ const dataReducer = (state, action) => {
       ...state,
       stockListLoading: false,
       stocks: newStocks
-    }
-  }
-
-  if (action.type === "OWNED_TOGGLE") {
-    const indexOfUpdatedItem = findStockIndex(state.stocks, action.id)
-    const stock = state.stocks[indexOfUpdatedItem]
-    const updatedStock = { ...stock, owned: !stock.owned }
-    let updatedStocks = [...state.stocks]
-    updatedStocks[indexOfUpdatedItem] = updatedStock
-
-    const ownedBool = stock.owned
-
-    try {
-      axios.post(`http://localhost:4001/stocks/update/${action.id}`,
-        { owned: ownedBool })
-    } catch (error) {
-      console.error(error);
-    }
-
-    return {
-      ...state,
-      stocks: updatedStocks
     }
   }
 

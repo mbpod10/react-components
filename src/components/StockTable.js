@@ -1,6 +1,6 @@
 import React from 'react'
 
-import classes from './StockTable.module.css'
+import classes from './CSS/StockTable.module.css'
 import Table from 'react-bootstrap/Table';
 
 const StockTable = (props) => {

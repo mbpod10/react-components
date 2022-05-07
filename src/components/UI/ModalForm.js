@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from 'react'
-import classes from "./ModalForm.module.css"
+import classes from "../CSS/ModalForm.module.css"
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 

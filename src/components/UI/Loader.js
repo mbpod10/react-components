@@ -1,4 +1,4 @@
-import classes from "./Loader.module.css"
+import classes from "../CSS/Loader.module.css"
 
 import React from 'react'
 
