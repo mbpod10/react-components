@@ -10,7 +10,6 @@ const StockTable = (props) => {
 
   const changeFilterHandler = (name) => {
     console.log(name)
-    // const filter = name.toLowerCase()
     changeOrderBy(name)
   }
 
@@ -19,12 +18,12 @@ const StockTable = (props) => {
       <Table responsive="xl">
         <thead>
           <tr>
-            <th onClick={() => changeFilterHandler('symbol')}>Symbol</th>
-            <th onClick={() => changeFilterHandler('name')}>Name</th>
+            <th className={classes.click} onClick={() => changeFilterHandler('symbol')}>Symbol</th>
+            <th className={classes.click} onClick={() => changeFilterHandler('name')}>Name</th>
             <th>Trade</th>
-            <th onClick={() => changeFilterHandler('price')}>Price</th>
+            <th className={classes.click} onClick={() => changeFilterHandler('price')}>Price</th>
             <th>Owned</th>
-            <th onClick={() => changeFilterHandler('amount')}>Amount</th>
+            <th className={classes.click} onClick={() => changeFilterHandler('amount')}>Amount</th>
           </tr>
         </thead>
         <tbody>

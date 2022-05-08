@@ -25,7 +25,10 @@ const StockList = (props) => {
       if (entries[0].isIntersecting && hasMore) {
         nextPage()
       }
+
     })
+    if (!hasMore) console.log('OUT OF STOCKS')
+
     if (node) {
       observer.current.observe(node)
     }

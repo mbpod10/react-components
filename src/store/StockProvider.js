@@ -1,4 +1,4 @@
-import { useReducer, useCallback, useMemo } from "react";
+import { useReducer, useCallback } from "react";
 
 import StockContext from "./stock-context";
 
@@ -93,15 +93,10 @@ const dataReducer = (state, action) => {
     }
   }
   if (action.type === "CHANGE_FILTER") {
-    // let orderFilter
-    if (state.orderBy === action.order_by) {
-      return state
-    }
-    return {
-      ...state,
-      stocks: [],
-      orderBy: action.order_by,
-    }
+
+    if (state.orderBy === action.order_by) return state
+    else return { ...state, stocks: [], orderBy: action.order_by, pageNumber: 1 }
+
   }
 }
 
@@ -148,7 +143,6 @@ const StockProvider = (props) => {
     totalMoney: stockState.totalMoney,
     pageNumber: stockState.pageNumber,
     transactionBool: stockState.transactionBool,
-    // orderBy: useMemo(() => stockState.orderBy, [stockState.orderBy]),
     orderBy: stockState.orderBy,
     changeAmount: changeAmountHandler,
     toggleOwned: toggleOwnedHandler,

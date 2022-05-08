@@ -22,7 +22,7 @@ tr {
   color: white
 }
 
-th:hover {
+.click:hover {
   cursor: pointer;
   color: aquamarine;
 }
