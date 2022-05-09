@@ -9,6 +9,8 @@ import StockContext from '../../store/stock-context';
 import Form from 'react-bootstrap/Form';
 import Loader from './Loader';
 
+import { API } from '../../config/nodeAPIAuth'
+
 
 const ModalForm = (props) => {
 
@@ -24,7 +26,7 @@ const ModalForm = (props) => {
     makeAPICall('transaction')
 
     const makeTransactionCall = async () => {
-      let response = await axios.post(`http://localhost:4001/stocks/${props.stock.id}`,
+      let response = await axios.post(`${API.singleStock}/${props.stock.id}`,
         { amount: tempAmount, transaction: transaction })
       if (response.data.error) {
         failureAPICall(response.data.error, 'transaction')
