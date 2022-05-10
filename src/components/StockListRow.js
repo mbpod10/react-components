@@ -17,7 +17,8 @@ function StockListRow(props) {
       <td className={`${classes.symbol} ${classes.odd}`}>{props.stock.id}${props.stock.symbol}</td>
       <td className={classes.even}>{props.stock.name}</td>
       <td className={classes.odd}><Button onClick={onTradeClick}>Trade</Button></td>
-      <td className={classes.even}>${props.stock.price.toFixed(2)}</td>
+      {/* <td className={classes.even}>${props.stock.price.toFixed(2)}</td> */}
+      <td className={classes.even}>${props.stock.price}</td>
       <td className={classes.odd}>
         {
           props.stock.owned ?

@@ -14,6 +14,7 @@ const useMoneyAmount = () => {
     const makeAPICallUse = async () => {
       try {
         const response = await axios.get(`${API.getTotalMoney}`)
+        // const response = await axios.get(`http://127.0.0.1:8000/stocks/money/total/`)    
         let formatNumber = `$${internationalNumberFormat.format(response.data.total_amount)}`
         setTotalAmount(formatNumber)
       } catch (error) {

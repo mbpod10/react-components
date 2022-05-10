@@ -32,6 +32,13 @@ const ModalForm = (props) => {
         failureAPICall(response.data.error, 'transaction')
         return;
       }
+
+      let responseDJANGO = await axios.put(`http://127.0.0.1:8000/stocks/${props.stock.id}/`,
+        { amount: tempAmount, transaction: transaction })
+      if (responseDJANGO.data.error) {
+        console.log(responseDJANGO.data.error)
+      }
+
       changeAmount(props.stock.id, tempAmount, transaction)
       props.onCloseTrade()
     };

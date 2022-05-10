@@ -13,7 +13,8 @@ const useStockPaginate = (pageNumber, orderBy) => {
     makeAPICall('list')
     const makeAPICallUse = async () => {
       try {
-        const response = await axios.get(`${API.getStocks}/${pageNumber}/${orderBy}`)
+        const response = await axios.get(`http://127.0.0.1:8000/stocks/list/page/${pageNumber}/${orderBy}/`)
+        // const response = await axios.get(`${API.getStocks}/${pageNumber}/${orderBy}/`)
         successAPICall(response.data.stocks)
         setHasMore(response.data.stocks.length > 0)
       } catch (error) {

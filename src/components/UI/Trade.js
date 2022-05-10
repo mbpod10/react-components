@@ -17,7 +17,7 @@ const Trade = (props) => {
           <>
             <h6>
               You Own {props.stock.amount}{" "}
-              Shares Worth ${(props.stock.amount * props.stock.price).toFixed(2)}
+              {/* Shares Worth ${(props.stock.amount * props.stock.price).toFixed(2)} */}
             </h6>
             <h6>
               <FontAwesomeIcon
